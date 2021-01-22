@@ -28,7 +28,15 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'crutledgedev',
+  'Air-Bear',
+  'Freet8707',
+  'Jeff-Clark-Topeka',
+  'CloudGang',
+  'DHaralson89',
+  'DanielleMathey95',
+];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -49,7 +57,70 @@ const followersArray = [];
       </div>
     </div>
 */
+const gitHub = (data) => {
+  const card = document.createElement('div');
+  const image = document.createElement('img');
+  const newCardInfo = document.createElement('div');
+  const name = document.createElement('h3');
+  const userName = document.createElement('p');
+  const location = document.createElement('p');
+  const profile = document.createElement('p');
+  const profileUrl = document.createElement('a');
+  const followers = document.createElement('p');
+  const following = document.createElement('p');
+  const bio = document.createElement('p');
 
+  image.src = data.avatar_url;
+  name.textContent = data.login;
+  userName.textContent = data.login;
+  location.textContent = `Location: ${data.location}`;
+  profile.textContent = `Profile: ${data.name}`;
+  profileUrl.textContent = `Link: ${data.html_url}`;
+  followers.textContent = `Followers: ${data.followers}`;
+  following.textContent = `Following: ${data.following}`;
+  bio.textContent = `Bio: ${data.bio}`;
+  
+  card.appendChild(image);
+  card.appendChild(newCardInfo);
+  newCardInfo.appendChild(name);
+  newCardInfo.appendChild(location);
+  newCardInfo.appendChild(profile);
+  newCardInfo.appendChild(followers);
+  newCardInfo.appendChild(following);
+  newCardInfo.appendChild(bio);
+  newCardInfo.appendChild(profileUrl);
+
+  card.classList.add('card');
+  newCardInfo.classList.add('card-info');
+  name.classList.add('name');
+  userName.classList.add('username')
+
+  return card;
+}
+
+const entryPoint = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/MichaelAllen007')
+
+.then(response => {
+  console.log(response);
+  entryPoint.appendChild(gitHub(response.data));
+})
+.catch(error => {
+  console.log("You done messed up now!!", error);
+});
+
+followersArray.forEach((follower) => {
+  axios.get(`https://api.github.com/users/${follower}`)
+  .then(response => {
+    console.log(response.data);
+    entryPoint.appendChild(gitHub(response.data))
+  })
+
+  .catch(err => {
+    console.log("You done messed up now!!", err)
+  })
+})
 /*
   List of LS Instructors Github username's:
     tetondan
